@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select - Health INFO</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Header Section -->
+  <header class="bg-red-600 p-5 pb-3 mb-10 flex flex-col sm:flex-row sm:justify-between sm:items-center text-center sm:text-left">
+    <p class="text-white text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-0">Health INFO</p>
+
+    <nav class="flex justify-center sm:justify-end space-x-4 sm:space-x-6">
+      <a href="home.html" class="text-white text-base sm:text-lg px-3 py-1 rounded hover:bg-white/20 transition">Home</a>
+    </nav>
+  </header>
+
+  <!-- Main Section -->
+  <main class="pt-6 text-center flex flex-col items-center px-4">
+    <p class="text-lg text-gray-700 font-medium mb-8">Select a Body Part to Learn More</p>
+
+    <!-- Container for Buttons -->
+    <div id="organContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 w-full max-w-6xl"></div>
+  </main>
+
+<script>
+  const bodyParts = [
+    { name: "skin", img: "/photos/outer/skin.jpg" },
+    { name: "hair", img: "/photos/outer/hair.jpg" },
+    { name: "eyes", img: "/photos/outer/eyes.jpg" },
+    { name: "ears", img: "/photos/outer/ears.jpg" },
+    { name: "nose", img: "/photos/outer/nose.jpg" },
+    { name: "mouth", img: "/photos/outer/mouth.jpg" },
+    { name: "hands", img: "/photos/outer/hand.jpg" },
+    { name: "legs", img: "/photos/outer/leg.jpg" },
+    { name: "feet", img: "/photos/outer/feet.jpg" },
+  ];
+
+  const container = document.getElementById("organContainer");
+
+  bodyParts.forEach(part => {
+    const btn = document.createElement("button");
+    const p = document.createElement("p");
+
+    // Create structure (button → text inside p)
+    btn.className = `
+      flex items-center justify-center bg-cover bg-center bg-no-repeat
+      text-white font-bold py-16 px-6 rounded-xl shadow-md text-3xl 
+      hover:scale-105 transition-transform duration-300
+    `;
+    btn.style.backgroundImage = `url('${part.img}')`;
+
+    p.textContent = part.name;
+    p.className = "bg-black/50 px-4 py-2 rounded text-white text-2xl capitalize";
+
+    btn.appendChild(p);
+
+    // ✅ Click — navigate to disease.html with organ name
+    btn.addEventListener("click", () => {
+      // Redirect and include organ name in URL (e.g., disease.html?organ=skin)
+      window.location.href = `diseases.html?organ=${encodeURIComponent(part.name)}`;
+    });
+
+    container.appendChild(btn);
+  });
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select - Health INFO (Inner Organs)</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Header Section -->
+  <header class="bg-red-600 p-5 pb-3 mb-10 flex flex-col sm:flex-row sm:justify-between sm:items-center text-center sm:text-left">
+    <p class="text-white text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-0">Health INFO</p>
+
+    <nav class="flex justify-center sm:justify-end space-x-4 sm:space-x-6">
+      <a href="home.html" class="text-white text-base sm:text-lg px-3 py-1 rounded hover:bg-white/20 transition">Home</a>
+     
+    </nav>
+  </header>
+
+  <!-- Main Section -->
+  <main class="pt-6 text-center flex flex-col items-center px-4">
+    <p class="text-lg text-gray-700 font-medium mb-8">Select an Inner Organ to Learn More</p>
+
+    <!-- Container for Buttons -->
+    <div id="organContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 w-full max-w-6xl"></div>
+  </main>
+
+  <script>
+    // Array of inner organs with background images
+    const bodyParts = [
+      { name: "heart", img: "photos/inner/heart.jpg" },
+      { name: "lungs", img: "photos/inner/lungs.jpg" },
+      { name: "brain", img: "photos/inner/brain.jpg" },
+      { name: "liver", img: "photos/inner/liver.webp" },
+      { name: "kidneys", img: "photos/inner/kidneys.webp" },
+      { name: "stomach", img: "photos/inner/stomach.webp" },
+      { name: "intestines", img: "photos/inner/intestine.jpg" },
+      { name: "pancreas", img: "photos/inner/pancreas.webp" },
+      { name: "bladder", img: "photos/inner/bladder.jpg" },
+      { name: "spleen", img: "photos/inner/spleen.jpg" },
+    ];
+
+    const container = document.getElementById("organContainer");
+
+    bodyParts.forEach(part => {
+      const btn = document.createElement("button");
+      btn.textContent = part.name.charAt(0).toUpperCase() + part.name.slice(1);
+
+      // Tailwind styling for buttons
+      btn.className = `
+        text-white font-bold py-16 px-6 rounded-xl shadow-md text-2xl capitalize
+        bg-cover bg-center bg-no-repeat hover:scale-105 transition-transform duration-300 
+        hover:shadow-lg hover:brightness-110
+      `;
+
+      // Set background image
+      btn.style.backgroundImage = `url('${part.img}')`;
+
+      // On click — redirect to disease page for that organ
+    btn.addEventListener("click", () => {
+      // Redirect and include organ name in URL (e.g., disease.html?organ=skin)
+      window.location.href = `diseases.html?organ=${encodeURIComponent(part.name)}`;
+    });
+
+      container.appendChild(btn);
+    });
+  </script>
+
+</body>
+</html>

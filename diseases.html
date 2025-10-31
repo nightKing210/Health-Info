@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diseases - Health INFO</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Header -->
+  <header class="bg-red-600 p-5 pb-3 mb-10 flex flex-col sm:flex-row sm:justify-between sm:items-center text-center sm:text-left">
+    <p class="text-white text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-0">Health INFO</p>
+
+    <nav class="flex justify-center sm:justify-end space-x-4 sm:space-x-6">
+      <a href="home.html" class="text-white text-base sm:text-lg px-3 py-1 rounded hover:bg-white/20 transition">Home</a>
+      <a href="OuterOrgan.html" class="text-white text-base sm:text-lg px-3 py-1 rounded hover:bg-white/20 transition">Outer Organs</a>
+      <a href="innerOrgans.html" class="text-white text-base sm:text-lg px-3 py-1 rounded hover:bg-white/20 transition">Inner Organs</a>
+    </nav>
+  </header>
+
+  <!-- Main -->
+  <main class="pt-6 text-center flex flex-col items-center px-4">
+    <h2 id="organTitle" class="text-3xl font-bold text-gray-800 mb-6"></h2>
+
+    <div id="diseaseContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 w-full max-w-6xl"></div>
+  </main>
+
+  <script>
+    // ✅ Complete disease data for outer + inner organs
+   const organDiseases = {
+    // OUTER ORGANS (Now 15 each)
+    "skin": [
+        { name: "Eczema", link: "https://en.wikipedia.org/wiki/Eczema" },
+        { name: "Psoriasis", link: "https://en.wikipedia.org/wiki/Psoriasis" },
+        { name: "Acne", link: "https://en.wikipedia.org/wiki/Acne" },
+        { name: "Skin Cancer", link: "https://en.wikipedia.org/wiki/Skin_cancer" },
+        { name: "Vitiligo", link: "https://en.wikipedia.org/wiki/Vitiligo" },
+        { name: "Rosacea", link: "https://en.wikipedia.org/wiki/Rosacea" },
+        { name: "Dermatitis Herpetiformis", link: "https://en.wikipedia.org/wiki/Dermatitis_herpetiformis" },
+        { name: "Hives (Urticaria)", link: "https://en.wikipedia.org/wiki/Hives" },
+        { name: "Impetigo", link: "https://en.wikipedia.org/wiki/Impetigo" },
+        { name: "Melanoma", link: "https://en.wikipedia.org/wiki/Melanoma" },
+        { name: "Lupus Erythematosus (Skin Manifestation)", link: "https://en.wikipedia.org/wiki/Lupus_erythematosus" },
+        { name: "Bullous Pemphigoid", link: "https://en.wikipedia.org/wiki/Bullous_pemphigoid" },
+        { name: "Contact Dermatitis", link: "https://en.wikipedia.org/wiki/Contact_dermatitis" },
+        { name: "Athlete's Foot (Tinea Pedis)", link: "https://en.wikipedia.org/wiki/Athlete%27s_foot" },
+        { name: "Hidradenitis Suppurativa", link: "https://en.wikipedia.org/wiki/Hidradenitis_suppurativa" }
+    ],
+    "eyes": [
+        { name: "Cataract", link: "https://en.wikipedia.org/wiki/Cataract" },
+        { name: "Conjunctivitis", link: "https://en.wikipedia.org/wiki/Conjunctivitis" },
+        { name: "Glaucoma", link: "https://en.wikipedia.org/wiki/Glaucoma" },
+        { name: "Dry Eye", link: "https://en.wikipedia.org/wiki/Dry_eye_syndrome" },
+        { name: "Keratitis", link: "https://en.wikipedia.org/wiki/Keratitis" },
+        { name: "Age-Related Macular Degeneration (AMD)", link: "https://en.wikipedia.org/wiki/Macular_degeneration" },
+        { name: "Diabetic Retinopathy", link: "https://en.wikipedia.org/wiki/Diabetic_retinopathy" },
+        { name: "Retinal Detachment", link: "https://en.wikipedia.org/wiki/Retinal_detachment" },
+        { name: "Myopia (Nearsightedness)", link: "https://en.wikipedia.org/wiki/Myopia" },
+        { name: "Hypermetropia (Farsightedness)", link: "https://en.wikipedia.org/wiki/Hypermetropia" },
+        { name: "Astigmatism", link: "https://en.wikipedia.org/wiki/Astigmatism" },
+        { name: "Amblyopia (Lazy Eye)", link: "https://en.wikipedia.org/wiki/Amblyopia" },
+        { name: "Blepharitis", link: "https://en.wikipedia.org/wiki/Blepharitis" },
+        { name: "Retinitis Pigmentosa", link: "https://en.wikipedia.org/wiki/Retinitis_pigmentosa" },
+        { name: "Uveitis", link: "https://en.wikipedia.org/wiki/Uveitis" }
+    ],
+    "nose": [
+        { name: "Sinusitis", link: "https://en.wikipedia.org/wiki/Sinusitis" },
+        { name: "Rhinitis", link: "https://en.wikipedia.org/wiki/Rhinitis" },
+        { name: "Nasal Polyps", link: "https://en.wikipedia.org/wiki/Nasal_polyp" },
+        { name: "Deviated Septum", link: "https://en.wikipedia.org/wiki/Deviated_septum" },
+        { name: "Epistaxis", link: "https://en.wikipedia.org/wiki/Nosebleed" },
+        { name: "Rhinophyma", link: "https://en.wikipedia.org/wiki/Rhinophyma" },
+        { name: "Chronic Atrophic Rhinitis", link: "https://en.wikipedia.org/wiki/Chronic_atrophic_rhinitis" },
+        { name: "Inverted Papilloma", link: "https://en.wikipedia.org/wiki/Inverted_papilloma" },
+        { name: "Nasal Vestibulitis", link: "https://en.wikipedia.org/wiki/Nasal_vestibulitis" },
+        { name: "Nonallergic Rhinitis", link: "https://en.wikipedia.org/wiki/Nonallergic_rhinitis" },
+        { name: "Rhinitis Medicamentosa", link: "https://en.wikipedia.org/wiki/Rhinitis_medicamentosa" },
+        { name: "Rhinolith", link: "https://en.wikipedia.org/wiki/Rhinolith" },
+        { name: "Saddle Nose", link: "https://en.wikipedia.org/wiki/Saddle_nose" },
+        { name: "Concha Bullosa", link: "https://en.wikipedia.org/wiki/Concha_bullosa" },
+        { name: "Empty Nose Syndrome", link: "https://en.wikipedia.org/wiki/Empty_nose_syndrome" }
+    ],
+    "ears": [
+        { name: "Otitis Media", link: "https://en.wikipedia.org/wiki/Otitis_media" },
+        { name: "Tinnitus", link: "https://en.wikipedia.org/wiki/Tinnitus" },
+        { name: "Ear Infection", link: "https://en.wikipedia.org/wiki/Otitis_externa" },
+        { name: "Hearing Loss", link: "https://en.wikipedia.org/wiki/Hearing_loss" },
+        { name: "Vertigo", link: "https://en.wikipedia.org/wiki/Vertigo" },
+        { name: "Ménière's Disease", link: "https://en.wikipedia.org/wiki/M%C3%A9ni%C3%A8re%27s_disease" },
+        { name: "Otosclerosis", link: "https://en.wikipedia.org/wiki/Otosclerosis" },
+        { name: "Cholesteatoma", link: "https://en.wikipedia.org/wiki/Cholesteatoma" },
+        { name: "Acoustic Neuroma", link: "https://en.wikipedia.org/wiki/Vestibular_schwannoma" },
+        { name: "Labyrinthitis", link: "https://en.wikipedia.org/wiki/Labyrinthitis" },
+        { name: "Perforated Eardrum", link: "https://en.wikipedia.org/wiki/Tympanic_membrane_perforation" },
+        { name: "Impacted Earwax (Cerumen)", link: "https://en.wikipedia.org/wiki/Earwax" },
+        { name: "Mastoiditis", link: "https://en.wikipedia.org/wiki/Mastoiditis" },
+        { name: "Tympanosclerosis", link: "https://en.wikipedia.org/wiki/Tympanosclerosis" },
+        { name: "Surfer's Ear", link: "https://en.wikipedia.org/wiki/Surfer%27s_ear" }
+    ],
+    "mouth": [
+        { name: "Canker Sores", link: "https://en.wikipedia.org/wiki/Aphthous_stomatitis" },
+        { name: "Oral Thrush", link: "https://en.wikipedia.org/wiki/Oral_thrush" },
+        { name: "Gingivitis", link: "https://en.wikipedia.org/wiki/Gingivitis" },
+        { name: "Tooth Decay", link: "https://en.wikipedia.org/wiki/Dental_caries" },
+        { name: "Oral Cancer", link: "https://en.wikipedia.org/wiki/Oral_cancer" },
+        { name: "Periodontitis (Gum Disease)", link: "https://en.wikipedia.org/wiki/Periodontitis" },
+        { name: "Halitosis (Chronic)", link: "https://en.wikipedia.org/wiki/Halitosis" },
+        { name: "Cold Sores (Herpes Labialis)", link: "https://en.wikipedia.org/wiki/Herpes_labialis" },
+        { name: "Dry Mouth Syndrome (Xerostomia)", link: "https://en.wikipedia.org/wiki/Xerostomia" },
+        { name: "Leukoplakia", link: "https://en.wikipedia.org/wiki/Leukoplakia" },
+        { name: "Dental Abscess", link: "https://en.wikipedia.org/wiki/Dental_abscess" },
+        { name: "Bruxism (Teeth Grinding)", link: "https://en.wikipedia.org/wiki/Bruxism" },
+        { name: "Cleft Lip and Palate", link: "https://en.wikipedia.org/wiki/Cleft_lip_and_cleft_palate" },
+        { name: "Denture Stomatitis", link: "https://en.wikipedia.org/wiki/Denture_stomatitis" },
+        { name: "Hand-Foot-and-Mouth Disease (Oral Manifestation)", link: "https://en.wikipedia.org/wiki/Hand,_foot,_and_mouth_disease" }
+    ],
+    "hands": [
+        { name: "Carpal Tunnel", link: "https://en.wikipedia.org/wiki/Carpal_tunnel_syndrome" },
+        { name: "Arthritis", link: "https://en.wikipedia.org/wiki/Arthritis" },
+        { name: "Tendonitis", link: "https://en.wikipedia.org/wiki/Tendinitis" },
+        { name: "Trigger Finger", link: "https://en.wikipedia.org/wiki/Trigger_finger" },
+        { name: "Ganglion Cyst", link: "https://en.wikipedia.org/wiki/Ganglion_cyst" },
+        { name: "Dupuytren's Contracture", link: "https://en.wikipedia.org/wiki/Dupuytren%27s_contracture" },
+        { name: "Boxer's Fracture", link: "https://en.wikipedia.org/wiki/Boxer%27s_fracture" },
+        { name: "De Quervain's Tenosynovitis", link: "https://en.wikipedia.org/wiki/De_Quervain%27s_tenosynovitis" },
+        { name: "Syndactyly (Fused Fingers)", link: "https://en.wikipedia.org/wiki/Syndactyly" },
+        { name: "Scaphoid Fracture", link: "https://en.wikipedia.org/wiki/Scaphoid_fracture" },
+        { name: "Rheumatoid Arthritis (Hand)", link: "https://en.wikipedia.org/wiki/Rheumatoid_arthritis" },
+        { name: "Infectious Tenosynovitis", link: "https://en.wikipedia.org/wiki/Infectious_tenosynovitis" },
+        { name: "Paronychia (Nail Infection)", link: "https://en.wikipedia.org/wiki/Paronychia" },
+        { name: "Gamekeeper's Thumb", link: "https://en.wikipedia.org/wiki/Gamekeeper%27s_thumb" },
+        { name: "Polydactyly (Extra Fingers)", link: "https://en.wikipedia.org/wiki/Polydactyly" }
+    ],
+    "legs": [
+        { name: "Varicose Veins", link: "https://en.wikipedia.org/wiki/Varicose_veins" },
+        { name: "Muscle Cramps", link: "https://en.wikipedia.org/wiki/Cramps" },
+        { name: "Shin Splints", link: "https://en.wikipedia.org/wiki/Shin_splints" },
+        { name: "Deep Vein Thrombosis", link: "https://en.wikipedia.org/wiki/Deep_vein_thrombosis" },
+        { name: "Leg Ulcer", link: "https://en.wikipedia.org/wiki/Leg_ulcer" },
+        { name: "Achilles Tendinopathy", link: "https://en.wikipedia.org/wiki/Achilles_tendinopathy" },
+        { name: "Cellulitis", link: "https://en.wikipedia.org/wiki/Cellulitis" },
+        { name: "Sciatica (Leg Pain)", link: "https://en.wikipedia.org/wiki/Sciatica" },
+        { name: "Compartment Syndrome", link: "https://en.wikipedia.org/wiki/Compartment_syndrome" },
+        { name: "Restless Legs Syndrome", link: "https://en.wikipedia.org/wiki/Restless_legs_syndrome" },
+        { name: "Peripheral Artery Disease (PAD)", link: "https://en.wikipedia.org/wiki/Peripheral_artery_disease" },
+        { name: "Baker's Cyst (Popliteal Cyst)", link: "https://en.wikipedia.org/wiki/Popliteal_cyst" },
+        { name: "Femoral Fracture", link: "https://en.wikipedia.org/wiki/Femoral_fracture" },
+        { name: "Legg–Calvé–Perthes Disease", link: "https://en.wikipedia.org/wiki/Legg%E2%80%93Calv%C3%A9%E2%80%93Perthes_disease" },
+        { name: "Osteoarthritis of the Knee", link: "https://en.wikipedia.org/wiki/Osteoarthritis_of_the_knee" }
+    ],
+    "hair": [
+        { name: "Dandruff", link: "https://en.wikipedia.org/wiki/Dandruff" },
+        { name: "Alopecia", link: "https://en.wikipedia.org/wiki/Alopecia" },
+        { name: "Lice Infestation", link: "https://en.wikipedia.org/wiki/Pediculosis_capitis" },
+        { name: "Folliculitis", link: "https://en.wikipedia.org/wiki/Folliculitis" },
+        { name: "Gray Hair", link: "https://en.wikipedia.org/wiki/Gray_hair" },
+        { name: "Telogen Effluvium", link: "https://en.wikipedia.org/wiki/Telogen_effluvium" },
+        { name: "Tinea Capitis (Scalp Ringworm)", link: "https://en.wikipedia.org/wiki/Tinea_capitis" },
+        { name: "Trichotillomania", link: "https://en.wikipedia.org/wiki/Trichotillomania" },
+        { name: "Hirsutism", link: "https://en.wikipedia.org/wiki/Hirsutism" },
+        { name: "Hypertrichosis", link: "https://en.wikipedia.org/wiki/Hypertrichosis" },
+        { name: "Monilethrix", link: "https://en.wikipedia.org/wiki/Monilethrix" },
+        { name: "Piedra", link: "https://en.wikipedia.org/wiki/Piedra" },
+        { name: "Pili Torti", link: "https://en.wikipedia.org/wiki/Pili_torti" },
+        { name: "Alopecia Areata", link: "https://en.wikipedia.org/wiki/Alopecia_areata" },
+        { name: "Bubble Hair Deformity", link: "https://en.wikipedia.org/wiki/Bubble_hair_deformity" }
+    ],
+    "feet": [
+        { name: "Athlete’s Foot", link: "https://en.wikipedia.org/wiki/Athlete%27s_foot" },
+        { name: "Plantar Fasciitis", link: "https://en.wikipedia.org/wiki/Plantar_fasciitis" },
+        { name: "Corns and Calluses", link: "https://en.wikipedia.org/wiki/Corn_(pathology)" },
+        { name: "Gout", link: "https://en.wikipedia.org/wiki/Gout" },
+        { name: "Foot Ulcer", link: "https://en.wikipedia.org/wiki/Foot_ulcer" },
+        { name: "Bunion", link: "https://en.wikipedia.org/wiki/Bunion" },
+        { name: "Ingrown Toenail", link: "https://en.wikipedia.org/wiki/Ingrown_toenail" },
+        { name: "Morton's Neuroma", link: "https://en.wikipedia.org/wiki/Morton%27s_neuroma" },
+        { name: "Achilles Bursitis", link: "https://en.wikipedia.org/wiki/Achilles_bursitis" },
+        { name: "Tarsal Tunnel Syndrome", link: "https://en.wikipedia.org/wiki/Tarsal_tunnel_syndrome" },
+        { name: "Plantar Wart (Verruca)", link: "https://en.wikipedia.org/wiki/Plantar_wart" },
+        { name: "Flat Feet (Pes Planus)", link: "https://en.wikipedia.org/wiki/Flat_feet" },
+        { name: "Trench Foot", link: "https://en.wikipedia.org/wiki/Trench_foot" },
+        { name: "Hallux Rigidus", link: "https://en.wikipedia.org/wiki/Hallux_rigidus" },
+        { name: "Diabetic Foot", link: "https://en.wikipedia.org/wiki/Diabetic_foot" }
+    ],
+
+    // INNER ORGANS (Now 15 each)
+    "heart": [
+        { name: "Heart Attack", link: "https://en.wikipedia.org/wiki/Myocardial_infarction" },
+        { name: "Arrhythmia", link: "https://en.wikipedia.org/wiki/Cardiac_arrhythmia" },
+        { name: "Cardiomyopathy", link: "https://en.wikipedia.org/wiki/Cardiomyopathy" },
+        { name: "Heart Failure", link: "https://en.wikipedia.org/wiki/Heart_failure" },
+        { name: "Angina", link: "https://en.wikipedia.org/wiki/Angina" },
+        { name: "Coronary Artery Disease", link: "https://en.wikipedia.org/wiki/Coronary_artery_disease" },
+        { name: "Valvular Heart Disease", link: "https://en.wikipedia.org/wiki/Valvular_heart_disease" },
+        { name: "Congenital Heart Disease", link: "https://en.wikipedia.org/wiki/Congenital_heart_disease" },
+        { name: "Rheumatic Heart Disease", link: "https://en.wikipedia.org/wiki/Rheumatic_heart_disease" },
+        { name: "Hypertensive Heart Disease", link: "https://en.wikipedia.org/wiki/Hypertensive_heart_disease" },
+        { name: "Pericarditis", link: "https://en.wikipedia.org/wiki/Pericarditis" },
+        { name: "Endocarditis", link: "https://en.wikipedia.org/wiki/Infective_endocarditis" },
+        { name: "Myocarditis", link: "https://en.wikipedia.org/wiki/Myocarditis" },
+        { name: "Atrial Fibrillation", link: "https://en.wikipedia.org/wiki/Atrial_fibrillation" },
+        { name: "Aortic Aneurysm", link: "https://en.wikipedia.org/wiki/Aortic_aneurysm" }
+     ],
+     "lungs": [
+        { name: "Asthma", link: "https://en.wikipedia.org/wiki/Asthma" },
+        { name: "Pneumonia", link: "https://en.wikipedia.org/wiki/Pneumonia" },
+        { name: "Bronchitis", link: "https://en.wikipedia.org/wiki/Bronchitis" },
+        { name: "COPD", link: "https://en.wikipedia.org/wiki/Chronic_obstructive_pulmonary_disease" },
+        { name: "Lung Cancer", link: "https://en.wikipedia.org/wiki/Lung_cancer" },
+        { name: "Emphysema", link: "https://en.wikipedia.org/wiki/Emphysema" },
+        { name: "Cystic Fibrosis (CF)", link: "https://en.wikipedia.org/wiki/Cystic_fibrosis" },
+        { name: "Tuberculosis (TB)", link: "https://en.wikipedia.org/wiki/Tuberculosis" },
+        { name: "Idiopathic Pulmonary Fibrosis", link: "https://en.wikipedia.org/wiki/Idiopathic_pulmonary_fibrosis" },
+        { name: "Sarcoidosis", link: "https://en.wikipedia.org/wiki/Sarcoidosis" },
+        { name: "Pneumothorax (Collapsed Lung)", link: "https://en.wikipedia.org/wiki/Pneumothorax" },
+        { name: "Acute Respiratory Distress Syndrome (ARDS)", link: "https://en.wikipedia.org/wiki/Acute_respiratory_distress_syndrome" },
+        { name: "Pulmonary Embolism", link: "https://en.wikipedia.org/wiki/Pulmonary_embolism" },
+        { name: "Bronchiectasis", link: "https://en.wikipedia.org/wiki/Bronchiectasis" },
+        { name: "Silicosis", link: "https://en.wikipedia.org/wiki/Silicosis" }
+     ],
+     "brain": [
+        { name: "Stroke", link: "https://en.wikipedia.org/wiki/Stroke" },
+        { name: "Epilepsy", link: "https://en.wikipedia.org/wiki/Epilepsy" },
+        { name: "Meningitis", link: "https://en.wikipedia.org/wiki/Meningitis" },
+        { name: "Alzheimer’s", link: "https://en.wikipedia.org/wiki/Alzheimer%27s_disease" },
+        { name: "Brain Tumor", link: "https://en.wikipedia.org/wiki/Brain_tumor" },
+        { name: "Parkinson's Disease", link: "https://en.wikipedia.org/wiki/Parkinson%27s_disease" },
+        { name: "Multiple Sclerosis (MS)", link: "https://en.wikipedia.org/wiki/Multiple_sclerosis" },
+        { name: "Amyotrophic Lateral Sclerosis (ALS)", link: "https://en.wikipedia.org/wiki/Amyotrophic_lateral_sclerosis" },
+        { name: "Huntington's Disease", link: "https://en.wikipedia.org/wiki/Huntington%27s_disease" },
+        { name: "Dementia (General)", link: "https://en.wikipedia.org/wiki/Dementia" },
+        { name: "Cerebral Palsy", link: "https://en.wikipedia.org/wiki/Cerebral_palsy" },
+        { name: "Migraine", link: "https://en.wikipedia.org/wiki/Migraine" },
+        { name: "Aneurysm (Cerebral)", link: "https://en.wikipedia.org/wiki/Cerebral_aneurysm" },
+        { name: "Encephalitis", link: "https://en.wikipedia.org/wiki/Encephalitis" },
+        { name: "Tourette Syndrome", link: "https://en.wikipedia.org/wiki/Tourette_syndrome" }
+     ],
+     "liver": [
+        { name: "Hepatitis", link: "https://en.wikipedia.org/wiki/Hepatitis" },
+        { name: "Cirrhosis", link: "https://en.wikipedia.org/wiki/Cirrhosis" },
+        { name: "Liver Cancer", link: "https://en.wikipedia.org/wiki/Liver_cancer" },
+        { name: "Fatty Liver", link: "https://en.wikipedia.org/wiki/Fatty_liver_disease" },
+        { name: "Jaundice", link: "https://en.wikipedia.org/wiki/Jaundice" },
+        { name: "Liver Failure", link: "https://en.wikipedia.org/wiki/Liver_failure" },
+        { name: "Alcoholic Liver Disease", link: "https://en.wikipedia.org/wiki/Alcoholic_liver_disease" },
+        { name: "Wilson's Disease", link: "https://en.wikipedia.org/wiki/Wilson%27s_disease" },
+        { name: "Hemochromatosis", link: "https://en.wikipedia.org/wiki/Hereditary_hemochromatosis" },
+        { name: "Primary Biliary Cholangitis (PBC)", link: "https://en.wikipedia.org/wiki/Primary_biliary_cholangitis" },
+        { name: "Biliary Atresia", link: "https://en.wikipedia.org/wiki/Biliary_atresia" },
+        { name: "Hepatic Encephalopathy", link: "https://en.wikipedia.org/wiki/Hepatic_encephalopathy" },
+        { name: "Alpha-1 Antitrypsin Deficiency", link: "https://en.wikipedia.org/wiki/Alpha-1_antitrypsin_deficiency" },
+        { name: "Budd-Chiari Syndrome", link: "https://en.wikipedia.org/wiki/Budd%E2%80%93Chiari_syndrome" },
+        { name: "Liver Abscess", link: "https://en.wikipedia.org/wiki/Liver_abscess" }
+     ],
+     "kidneys": [
+        { name: "Kidney Stones", link: "https://en.wikipedia.org/wiki/Kidney_stone_disease" },
+        { name: "Chronic Kidney Disease", link: "https://en.wikipedia.org/wiki/Chronic_kidney_disease" },
+        { name: "Nephritis", link: "https://en.wikipedia.org/wiki/Nephritis" },
+        { name: "Kidney Infection", link: "https://en.wikipedia.org/wiki/Pyelonephritis" },
+        { name: "Kidney Failure", link: "https://en.wikipedia.org/wiki/Kidney_failure" },
+        { name: "Acute Kidney Injury (AKI)", link: "https://en.wikipedia.org/wiki/Acute_kidney_injury" },
+        { name: "Polycystic Kidney Disease (PKD)", link: "https://en.wikipedia.org/wiki/Autosomal_dominant_polycystic_kidney_disease" },
+        { name: "Glomerulonephritis", link: "https://en.wikipedia.org/wiki/Glomerulonephritis" },
+        { name: "Diabetic Nephropathy", link: "https://en.wikipedia.org/wiki/Diabetic_nephropathy" },
+        { name: "IgA Nephropathy", link: "https://en.wikipedia.org/wiki/IgA_nephropathy" },
+        { name: "Renal Artery Stenosis", link: "https://en.wikipedia.org/wiki/Renal_artery_stenosis" },
+        { name: "Hydronephrosis", link: "https://en.wikipedia.org/wiki/Hydronephrosis" },
+        { name: "Alport Syndrome", link: "https://en.wikipedia.org/wiki/Alport_syndrome" },
+        { name: "Lupus Nephritis", link: "https://en.wikipedia.org/wiki/Lupus_nephritis" },
+        { name: "Nephrotic Syndrome", link: "https://en.wikipedia.org/wiki/Nephrotic_syndrome" }
+     ],
+     "stomach": [
+        { name: "Gastritis", link: "https://en.wikipedia.org/wiki/Gastritis" },
+        { name: "Ulcers", link: "https://en.wikipedia.org/wiki/Peptic_ulcer_disease" },
+        { name: "Stomach Cancer", link: "https://en.wikipedia.org/wiki/Stomach_cancer" },
+        { name: "Acid Reflux", link: "https://en.wikipedia.org/wiki/Gastroesophageal_reflux_disease" },
+        { name: "Indigestion", link: "https://en.wikipedia.org/wiki/Indigestion" },
+        { name: "Gastroenteritis", link: "https://en.wikipedia.org/wiki/Gastroenteritis" },
+        { name: "Gastroparesis", link: "https://en.wikipedia.org/wiki/Gastroparesis" },
+        { name: "Pyloric Stenosis", link: "https://en.wikipedia.org/wiki/Pyloric_stenosis" },
+        { name: "Dumping Syndrome", link: "https://en.wikipedia.org/wiki/Dumping_syndrome" },
+        { name: "Zollinger-Ellison Syndrome", link: "https://en.wikipedia.org/wiki/Zollinger%E2%80%93Ellison_syndrome" },
+        { name: "Gastric Volvulus", link: "https://en.wikipedia.org/wiki/Gastric_volvulus" },
+        { name: "Gastric Outlet Obstruction", link: "https://en.wikipedia.org/wiki/Gastric_outlet_obstruction" },
+        { name: "Portal Hypertensive Gastropathy", link: "https://en.wikipedia.org/wiki/Portal_hypertensive_gastropathy" },
+        { name: "Achlorhydria", link: "https://en.wikipedia.org/wiki/Achlorhydria" },
+        { name: "Atrophic Gastritis", link: "https://en.wikipedia.org/wiki/Atrophic_gastritis" }
+     ],
+     "intestines": [
+        { name: "IBS", link: "https://en.wikipedia.org/wiki/Irritable_bowel_syndrome" },
+        { name: "Crohn’s Disease", link: "https://en.wikipedia.org/wiki/Crohn%27s_disease" },
+        { name: "Ulcerative Colitis", link: "https://en.wikipedia.org/wiki/Ulcerative_colitis" },
+        { name: "Intestinal Obstruction", link: "https://en.wikipedia.org/wiki/Bowel_obstruction" },
+        { name: "Celiac Disease", link: "https://en.wikipedia.org/wiki/Coeliac_disease" },
+        { name: "Diverticulitis", link: "https://en.wikipedia.org/wiki/Diverticulitis" },
+        { name: "Appendicitis", link: "https://en.wikipedia.org/wiki/Appendicitis" },
+        { name: "Hemorrhoids", link: "https://en.wikipedia.org/wiki/Hemorrhoid" },
+        { name: "Lactose Intolerance", link: "https://en.wikipedia.org/wiki/Lactose_intolerance" },
+        { name: "Hirschsprung Disease", link: "https://en.wikipedia.org/wiki/Hirschsprung%27s_disease" },
+        { name: "Intussusception", link: "https://en.wikipedia.org/wiki/Intussusception" },
+        { name: "Whipple's Disease", link: "https://en.wikipedia.org/wiki/Whipple%27s_disease" },
+        { name: "Mesenteric Ischemia", link: "https://en.wikipedia.org/wiki/Mesenteric_ischemia" },
+        { name: "Intestinal Volvulus", link: "https://en.wikipedia.org/wiki/Volvulus" },
+        { name: "Typhlitis (Neutropenic Colitis)", link: "https://en.wikipedia.org/wiki/Typhlitis" }
+     ],
+     "pancreas": [
+        { name: "Pancreatitis", link: "https://en.wikipedia.org/wiki/Pancreatitis" },
+        { name: "Pancreatic Cancer", link: "https://en.wikipedia.org/wiki/Pancreatic_cancer" },
+        { name: "Diabetes", link: "https://en.wikipedia.org/wiki/Diabetes_mellitus" },
+        { name: "Cystic Fibrosis", link: "https://en.wikipedia.org/wiki/Cystic_fibrosis" },
+        { name: "Pancreatic Insufficiency", link: "https://en.wikipedia.org/wiki/Exocrine_pancreatic_insufficiency" },
+        { name: "Acute Pancreatitis", link: "https://en.wikipedia.org/wiki/Pancreatitis#Acute_pancreatitis" },
+        { name: "Chronic Pancreatitis", link: "https://en.wikipedia.org/wiki/Pancreatitis#Chronic_pancreatitis" },
+        { name: "Pancreatic Pseudocyst", link: "https://en.wikipedia.org/wiki/Pancreatic_pseudocyst" },
+        { name: "Insulinoma (Benign Tumor)", link: "https://en.wikipedia.org/wiki/Insulinoma" },
+        { name: "Zollinger-Ellison Syndrome", link: "https://en.wikipedia.org/wiki/Zollinger%E2%80%93Ellison_syndrome" },
+        { name: "Pancreas Divisum", link: "https://en.wikipedia.org/wiki/Pancreas_divisum" },
+        { name: "Annular Pancreas", link: "https://en.wikipedia.org/wiki/Annular_pancreas" },
+        { name: "Type 1 Diabetes Mellitus", link: "https://en.wikipedia.org/wiki/Diabetes_mellitus_type_1" },
+        { name: "Serous Cystadenoma", link: "https://en.wikipedia.org/wiki/Serous_cystadenoma_of_the_pancreas" },
+        { name: "Hemosuccus Pancreaticus", link: "https://en.wikipedia.org/wiki/Hemosuccus_pancreaticus" }
+     ],
+     "bladder": [
+        { name: "UTI", link: "https://en.wikipedia.org/wiki/Urinary_tract_infection" },
+        { name: "Bladder Cancer", link: "https://en.wikipedia.org/wiki/Bladder_cancer" },
+        { name: "Interstitial Cystitis", link: "https://en.wikipedia.org/wiki/Interstitial_cystitis" },
+        { name: "Overactive Bladder", link: "https://en.wikipedia.org/wiki/Overactive_bladder" },
+        { name: "Urinary Retention", link: "https://en.wikipedia.org/wiki/Urinary_retention" },
+        { name: "Cystitis", link: "https://en.wikipedia.org/wiki/Cystitis" },
+        { name: "Bladder Stones", link: "https://en.wikipedia.org/wiki/Bladder_stone" },
+        { name: "Cystocele (Prolapsed Bladder)", link: "https://en.wikipedia.org/wiki/Cystocele" },
+        { name: "Hemorrhagic Cystitis", link: "https://en.wikipedia.org/wiki/Hemorrhagic_cystitis" },
+        { name: "Bladder Outlet Obstruction", link: "https://en.wikipedia.org/wiki/Bladder_outlet_obstruction" },
+        { name: "Vesicoureteral Reflux", link: "https://en.wikipedia.org/wiki/Vesicoureteral_reflux" },
+        { name: "Underactive Bladder", link: "https://en.wikipedia.org/wiki/Underactive_bladder" },
+        { name: "Hunner's Ulcer", link: "https://en.wikipedia.org/wiki/Hunner%27s_ulcer" },
+        { name: "Bladder Exstrophy", link: "https://en.wikipedia.org/wiki/Bladder_exstrophy" },
+        { name: "Bladder Polyps", link: "https://en.wikipedia.org/wiki/Bladder_polyp" }
+     ],
+     "spleen": [
+        { name: "Splenomegaly", link: "https://en.wikipedia.org/wiki/Splenomegaly" },
+        { name: "Ruptured Spleen", link: "https://en.wikipedia.org/wiki/Splenic_rupture" },
+        { name: "Hypersplenism", link: "https://en.wikipedia.org/wiki/Hypersplenism" },
+        { name: "Infections", link: "https://en.wikipedia.org/wiki/Spleen#Clinical_significance" },
+        { name: "Sickle Cell Disease", link: "https://en.wikipedia.org/wiki/Sickle_cell_disease" },
+        { name: "Asplenia", link: "https://en.wikipedia.org/wiki/Asplenia" },
+        { name: "Splenic Sequestration Crisis", link: "https://en.wikipedia.org/wiki/Splenic_sequestration_crisis" },
+        { name: "Splenic Cysts", link: "https://en.wikipedia.org/wiki/Splenic_cyst" },
+        { name: "Splenic Abscess", link: "https://en.wikipedia.org/wiki/Splenic_abscess" },
+        { name: "Splenic Infarction", link: "https://en.wikipedia.org/wiki/Splenic_infarction" },
+        { name: "Splenic Hemangioma", link: "https://en.wikipedia.org/wiki/Hemangioma" },
+        { name: "Gaucher's Disease", link: "https://en.wikipedia.org/wiki/Gaucher%27s_disease" },
+        { name: "Banti's Syndrome", link: "https://en.wikipedia.org/wiki/Banti%27s_syndrome" },
+        { name: "Leukemia/Lymphoma (Splenic Involvement)", link: "https://en.wikipedia.org/wiki/Lymphoma" },
+        { name: "Hereditary Spherocytosis", link: "https://en.wikipedia.org/wiki/Hereditary_spherocytosis" }
+     ]
+};
+    // ✅ Get organ name from URL
+    const params = new URLSearchParams(window.location.search);
+    const organName = params.get("organ");
+    const container = document.getElementById("diseaseContainer");
+    const title = document.getElementById("organTitle");
+
+    if (!organName || !organDiseases[organName]) {
+      title.textContent = "No diseases found for this organ.";
+    } else {
+      title.textContent = organName.charAt(0).toUpperCase() + organName.slice(1) + " Diseases";
+
+      organDiseases[organName].forEach(disease => {
+        const btn = document.createElement("button");
+        btn.textContent = disease.name;
+        btn.className = `
+          bg-white text-red-600 font-semibold py-4 px-4 rounded-lg 
+          shadow-2xl border-2 border-amber-100  hover:bg-red-600 hover:text-white transition transform hover:scale-105
+        `;
+        btn.addEventListener("click", () => window.open(disease.link, "_blank"));
+        container.appendChild(btn);
+      });
+    }
+  </script>
+
+</body>
+</html>

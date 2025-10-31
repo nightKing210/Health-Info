@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+.nav-property{
+  @apply text-xl text-white mr-9 hover:underline;
+}
+.btn-property{
+  @apply bg-red-600 text-cyan-50 mt-7 rounded-sm p-3 font-bold hover:bg-red-500 transition cursor-pointer;
+}
